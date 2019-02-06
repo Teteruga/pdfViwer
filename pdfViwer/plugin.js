@@ -1,4 +1,4 @@
-﻿CKEDITOR.plugins.add( 'pdfViwer', {
+CKEDITOR.plugins.add( 'pdfViwer', {
     icons: 'pdfViwer',
     availableLangs: {'pt-br':1, 'en':1},
     lang: 'pt-br, en',
@@ -15,8 +15,9 @@
         editor.addCommand("pdf-viwer", {
             exec: function(evt) {
 
-                var lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl. Suspendisse rhoncus nisl posuere tortor tempus et dapibus elit porta. Cras leo neque, elementum a rhoncus ut, vestibulum non nibh. Phasellus pretium justo turpis. Etiam vulputate, odio vitae tincidunt ultricies, eros odio dapibus nisi, ut tincidunt lacus arcu eu elit. Aenean velit erat, vehicula eget lacinia ut, dignissim non tellus. Aliquam nec lacus mi, sed vestibulum nunc. Suspendisse potenti. Curabitur vitae sem turpis. Vestibulum sed neque eget dolor dapibus porttitor at sit amet sem. Fusce a turpis lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris at ante tellus. Vestibulum a metus lectus. Praesent tempor purus a lacus blandit eget gravida ante hendrerit. Cras et eros metus. Sed commodo malesuada eros, vitae interdum augue semper quis. Fusce id magna nunc. Curabitur sollicitudin placerat semper. Cras et mi neque, a dignissim risus. Nulla venenatis porta lacus, vel rhoncus lectus tempor vitae. Duis sagittis venenatis rutrum. Curabitur tempor massa…";
+                // var lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl. Suspendisse rhoncus nisl posuere tortor tempus et dapibus elit porta. Cras leo neque, elementum a rhoncus ut, vestibulum non nibh. Phasellus pretium justo turpis. Etiam vulputate, odio vitae tincidunt ultricies, eros odio dapibus nisi, ut tincidunt lacus arcu eu elit. Aenean velit erat, vehicula eget lacinia ut, dignissim non tellus. Aliquam nec lacus mi, sed vestibulum nunc. Suspendisse potenti. Curabitur vitae sem turpis. Vestibulum sed neque eget dolor dapibus porttitor at sit amet sem. Fusce a turpis lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris at ante tellus. Vestibulum a metus lectus. Praesent tempor purus a lacus blandit eget gravida ante hendrerit. Cras et eros metus. Sed commodo malesuada eros, vitae interdum augue semper quis. Fusce id magna nunc. Curabitur sollicitudin placerat semper. Cras et mi neque, a dignissim risus. Nulla venenatis porta lacus, vel rhoncus lectus tempor vitae. Duis sagittis venenatis rutrum. Curabitur tempor massa…";
 
+                var editorContent = editor.getData();
 
                 $.getScript("/lorenzog/pgedigital/webroot/js/ckeditor/plugins/pdfViwer/dependencies/pdfkit.js", function() {
 
@@ -24,7 +25,51 @@
 
                         var doc = new PDFDocument();
                         var stream = doc.pipe(blobStream());
-                        
+
+                        finder = new Regex(" ( (<p>)|(<h\d>)|(<ol>) )[\s\S]*( (<\/p>)|(<\/h\d)|(<\/ol>) ) ");
+
+                        var matches = editorContent.search(finder);
+
+                        <p>
+                            <span dir="rtl">
+                                <u>ASDHaushdiuashdiua</u>
+                                shuidha
+                                <em>siudasuidh</em>
+                                IA
+                                <strong>UShdIUAS</strong>
+                                HDIUA
+                                <span style="font-family:Arial,Helvetica,sans-serif">
+                                    HSIUDHA
+                                </span>
+                                SIDhasuidhasiudha
+                                <tt>
+                                    <span class="marker">
+                                        siu
+                                    </span>
+                                </tt>
+                                dhasiudh
+                                <span style="font-family:Courier New,Courier,monospace">
+                                    iaushdiuashdaiushdui
+                                </span>
+                                    ai
+                                <span style="font-size:14px">
+                                    ouh
+                                </span>
+                                asiuhdiu
+                                <span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif">
+                                    ashd
+                                </span>
+                                iuasdiu
+                                <span style="font-family:Comic Sans MS,cursive">
+                                    ashdui
+                                </span>
+                                ahsid
+                            </span>
+                        </p>
+
+
+
+
                         // draw some text
                         doc.fontSize(25).text('Here is some vector graphics...', 100, 80);
                         
@@ -60,8 +105,8 @@
                             ellipsis: true
                         });
                         
-                        // end and display the document in the iframe to the right
                         doc.end();
+
                         stream.on('finish', function() {
 
                             const leftpos = screen.width / 2;
@@ -78,17 +123,17 @@
                             
                             var divText = '<html><head></head><body style="padding: 0px 5px;"></body></html>';
             
-                            var doc = visualizarWindow.document;
-                            doc.open();
-                            doc.write(divText);
-                            doc.close();
+                            var docWindow = visualizarWindow.document;
+                            docWindow.open();
+                            docWindow.write(divText);
+                            docWindow.close();
 
-                            iframe = doc.createElement("iframe");
+                            iframe = docWindow.createElement("iframe");
                             iframe.src = stream.toBlobURL('application/pdf');
                             iframe.style.width = "100%";
                             iframe.style.height = "100%";
 
-                            body = doc.getElementsByTagName("body")[0];
+                            body = docWindow.getElementsByTagName("body")[0];
                             body.appendChild( iframe );
 
                         });
