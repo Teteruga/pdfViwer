@@ -26,46 +26,86 @@ CKEDITOR.plugins.add( 'pdfViwer', {
                         var doc = new PDFDocument();
                         var stream = doc.pipe(blobStream());
 
-                        finder = new Regex(" ( (<p>)|(<h\d>)|(<ol>) )[\s\S]*( (<\/p>)|(<\/h\d)|(<\/ol>) ) ");
+                        RegexP = new RegExp(/(?:(<\s*p.*>)|(<\s*h\d.*>)|(<\s*ol.*>))[\s\S]*(?:(<\s*\/\s*p\s*>)|(<\s*\/\s*h\d\s*>)|(<\s*\/\s*ol\s*>))/);
 
-                        var matches = editorContent.search(finder);
+                        var matches = RegexP.exec(editorContent);
 
-                        <p>
-                            <span dir="rtl">
-                                <u>ASDHaushdiuashdiua</u>
-                                shuidha
-                                <em>siudasuidh</em>
-                                IA
-                                <strong>UShdIUAS</strong>
-                                HDIUA
-                                <span style="font-family:Arial,Helvetica,sans-serif">
-                                    HSIUDHA
-                                </span>
-                                SIDhasuidhasiudha
-                                <tt>
-                                    <span class="marker">
-                                        siu
-                                    </span>
-                                </tt>
-                                dhasiudh
-                                <span style="font-family:Courier New,Courier,monospace">
-                                    iaushdiuashdaiushdui
-                                </span>
-                                    ai
-                                <span style="font-size:14px">
-                                    ouh
-                                </span>
-                                asiuhdiu
-                                <span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif">
-                                    ashd
-                                </span>
-                                iuasdiu
-                                <span style="font-family:Comic Sans MS,cursive">
-                                    ashdui
-                                </span>
-                                ahsid
-                            </span>
-                        </p>
+                        var RegexStyle = new RegExp(/(?!style\s*=\s*)[\'\"\´\`][\s\S]*[\'\"\´\`]/);
+
+                        var style = RegexStyle.exec(matches[0]);
+                        
+                        var RegexCleanUp = new RegExp(/[\'\"\´\`;]/);
+
+                        var styles = style[0].replace(RegexCleanUp, "");
+                        styles = styles.replace("\"", "");
+
+                        styles = styles.split(";");
+
+                        var objStyle = {};
+
+                        styles.forEach(function(value, key) {
+
+                            var propertyArr = value.split(":");
+
+                                //TO DO: transform px to point ratio of 1px -> 0.75points
+                                objStyle[propertyArr[0].trim()] = propertyArr[1].trim();
+
+                        });
+
+                        console.log(objStyle);
+
+                        for (var propertyName in myObject) {
+
+                            if (myObject.hasOwnProperty(propertyName)) {
+                              
+                                switch(propertyName){
+                                    case '':
+                                        console.log('case');
+                                    break;
+                                    default:
+                                        console.log('default');
+
+                                }
+
+                            }
+                          }
+
+                        // <p style="text-indent:50px">
+                        //     <span dir="rtl">
+                        //         <u>ASDHaushdiuashdiua</u>
+                        //         shuidha
+                        //         <em>siudasuidh</em>
+                        //         IA
+                        //         <strong>UShdIUAS</strong>
+                        //         HDIUA
+                        //         <span style="font-family:Arial,Helvetica,sans-serif">
+                        //             HSIUDHA
+                        //         </span>
+                        //         SIDhasuidhasiudha
+                        //         <tt>
+                        //             <span class="marker">
+                        //                 siu
+                        //             </span>
+                        //         </tt>
+                        //         dhasiudh
+                        //         <span style="font-family:Courier New,Courier,monospace">
+                        //             iaushdiuashdaiushdui
+                        //         </span>
+                        //             ai
+                        //         <span style="font-size:14px">
+                        //             ouh
+                        //         </span>
+                        //         asiuhdiu
+                        //         <span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif">
+                        //             ashd
+                        //         </span>
+                        //         iuasdiu
+                        //         <span style="font-family:Comic Sans MS,cursive">
+                        //             ashdui
+                        //         </span>
+                        //         ahsid
+                        //     </span>
+                        // </p>
 
 
 
